@@ -5,7 +5,7 @@
     homeModules = {
       # Common home-manager configuration shared between Linux and macOS.
       common = { pkgs, ... }: {
-        home.packages = with pkgs; [ fnm fzf loc ];
+        home.packages = with pkgs; [ fnm fzf loc onefetch ];
         programs = {
           git = {
             enable = true;
