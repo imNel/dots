@@ -61,6 +61,9 @@
           darwinConfigurations = {
             "Nels-MacBook-Pro-2" = self.nixos-flake.lib.mkMacosSystem {
               nixpkgs.hostPlatform = "aarch64-darwin";
+              nix.extraOptions = ''
+                warn-dirty = false
+              '';
               imports = [
                 self.nixosModules.common # See below for "nixosModules"!
                 self.nixosModules.darwin
