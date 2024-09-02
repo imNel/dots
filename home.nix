@@ -47,10 +47,7 @@
           ripgrep.enable = true;
           hyfetch.enable = true;
           gh.enable = true;
-          bat = {
-            enable = true;
-            # tokyonight.enable = true;
-          };
+          bat.enable = true;
           neovim = {
             enable = true;
             defaultEditor = true;
