@@ -64,6 +64,10 @@
               nix.extraOptions = ''
                 warn-dirty = false
               '';
+              homebrew = {
+                enable = true;
+                casks = [ "nikitabobko/tap/aerospace" ];
+              };
               imports = [
                 self.nixosModules.common # See below for "nixosModules"!
                 self.nixosModules.darwin
@@ -107,6 +111,9 @@
             darwin = { pkgs, ... }: {
               security.pam.enableSudoTouchIdAuth = true;
               services.nix-daemon.enable = true;
+              services.sketchybar = {
+                enable = true;
+              };
 
               system.defaults.universalaccess.reduceMotion = true;
             };
