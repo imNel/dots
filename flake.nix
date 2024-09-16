@@ -11,9 +11,15 @@
     nixos-flake.url = "github:srid/nixos-flake";
   };
 
-  outputs = inputs@{ self, ... }:
+  outputs =
+    inputs@{ self, ... }:
     inputs.flake-parts.lib.mkFlake { inherit inputs; } {
-      systems = [ "x86_64-linux" "aarch64-linux" "aarch64-darwin" "x86_64-darwin" ];
+      systems = [
+        "x86_64-linux"
+        "aarch64-linux"
+        "aarch64-darwin"
+        "x86_64-darwin"
+      ];
       imports = [
         inputs.nixos-flake.flakeModule
         ./home.nix
@@ -29,50 +35,69 @@
             nixos = self.nixos-flake.lib.mkLinuxSystem {
               nixpkgs.hostPlatform = "x86_64-linux";
               nix = {
-	        settings.experimental-features = ["nix-command" "flakes"];
-	        extraOptions = ''
+                settings.experimental-features = [
+                  "nix-command"
+                  "flakes"
+                ];
+                extraOptions = ''
                   warn-dirty = false
                 '';
-	      };
+              };
               imports = [
                 self.nixosModules.common # See below for "nixosModules"!
                 self.nixosModules.linux
                 # Your machine's configuration.nix goes here
-                ({ config, lib, pkgs, modulesPath, ... }: {
+                (
+                  {
+                    config,
+                    lib,
+                    pkgs,
+                    modulesPath,
+                    ...
+                  }:
+                  {
 
-  imports =
-    [ (modulesPath + "/installer/scan/not-detected.nix")
-    ];
+                    imports = [ (modulesPath + "/installer/scan/not-detected.nix") ];
 
-  boot.initrd.availableKernelModules = [ "xhci_pci" "ahci" "usb_storage" "usbhid" "sd_mod" ];
-  boot.initrd.kernelModules = [ ];
-  boot.kernelModules = [ "kvm-amd" ];
-  boot.extraModulePackages = [ ];
+                    boot.initrd.availableKernelModules = [
+                      "xhci_pci"
+                      "ahci"
+                      "usb_storage"
+                      "usbhid"
+                      "sd_mod"
+                    ];
+                    boot.initrd.kernelModules = [ ];
+                    boot.kernelModules = [ "kvm-amd" ];
+                    boot.extraModulePackages = [ ];
 
-  fileSystems."/" =
-    { device = "/dev/disk/by-uuid/fc5ff8d1-192e-4f56-b890-3ea5e7140400";
-      fsType = "ext4";
-    };
+                    fileSystems."/" = {
+                      device = "/dev/disk/by-uuid/fc5ff8d1-192e-4f56-b890-3ea5e7140400";
+                      fsType = "ext4";
+                    };
 
-  fileSystems."/boot" =
-    { device = "/dev/disk/by-uuid/205A-77CE";
-      fsType = "vfat";
-      options = [ "fmask=0077" "dmask=0077" ];
-    };
+                    fileSystems."/boot" = {
+                      device = "/dev/disk/by-uuid/205A-77CE";
+                      fsType = "vfat";
+                      options = [
+                        "fmask=0077"
+                        "dmask=0077"
+                      ];
+                    };
 
-  swapDevices = [ ];
+                    swapDevices = [ ];
 
-  # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
-  # (the default) this is the recommended approach. When using systemd-networkd it's
-  # still possible to use this option, but it's recommended to use it in conjunction
-  # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
-  networking.useDHCP = lib.mkDefault true;
-  # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
+                    # Enables DHCP on each ethernet and wireless interface. In case of scripted networking
+                    # (the default) this is the recommended approach. When using systemd-networkd it's
+                    # still possible to use this option, but it's recommended to use it in conjunction
+                    # with explicit per-interface declarations with `networking.interfaces.<interface>.useDHCP`.
+                    networking.useDHCP = lib.mkDefault true;
+                    # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
 
-  nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-  hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
-                  system.stateVersion = "24.05";
-                })
+                    nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
+                    hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+                    system.stateVersion = "24.05";
+                  }
+                )
                 # Your home-manager configuration
                 self.nixosModules.home-manager
                 {
@@ -103,12 +128,15 @@
                 self.nixosModules.common # See below for "nixosModules"!
                 self.nixosModules.darwin
                 # Your machine's configuration.nix goes here
-                ({ pkgs, ... }: {
-                  # Used for backwards compatibility, please read the changelog before changing.
-                  # $ darwin-rebuild changelog
-                  system.stateVersion = 4;
-                  users.users.${myUserName}.home = "/Users/${myUserName}";
-                })
+                (
+                  { pkgs, ... }:
+                  {
+                    # Used for backwards compatibility, please read the changelog before changing.
+                    # $ darwin-rebuild changelog
+                    system.stateVersion = 4;
+                    users.users.${myUserName}.home = "/Users/${myUserName}";
+                  }
+                )
                 # Your home-manager configuration
                 self.darwinModules_.home-manager
                 {
@@ -128,95 +156,107 @@
           # All nixos/nix-darwin configurations are kept here.
           nixosModules = {
             # Common nixos/nix-darwin configuration shared between Linux and macOS.
-            common = { pkgs, ... }: {
-	      nixpkgs.config.allowUnfree = true;
-              environment.systemPackages = with pkgs; [
-                neovim gnumake git
-              ];
-            };
+            common =
+              { pkgs, ... }:
+              {
+                nixpkgs.config.allowUnfree = true;
+                environment.systemPackages = with pkgs; [
+                  neovim
+                  gnumake
+                  git
+                  nixfmt-rfc-style
+                ];
+              };
             # NixOS specific configuration
-            linux = { pkgs, ... }: {
-              boot.loader.systemd-boot.enable = true;
-              boot.loader.efi.canTouchEfiVariables = true;
+            linux =
+              { pkgs, ... }:
+              {
+                boot.loader.systemd-boot.enable = true;
+                boot.loader.efi.canTouchEfiVariables = true;
 
-              networking.hostName = "nixos"; # Define your hostname.
-              networking.networkmanager.enable = true;
+                networking.hostName = "nixos"; # Define your hostname.
+                networking.networkmanager.enable = true;
 
-              # locale
-              time.timeZone = "Australia/Perth";
-              i18n.defaultLocale = "en_AU.UTF-8";
-              i18n.extraLocaleSettings = {
-                LC_ADDRESS = "en_AU.UTF-8";
-                LC_IDENTIFICATION = "en_AU.UTF-8";
-                LC_MEASUREMENT = "en_AU.UTF-8";
-                LC_MONETARY = "en_AU.UTF-8";
-                LC_NAME = "en_AU.UTF-8";
-                LC_NUMERIC = "en_AU.UTF-8";
-                LC_PAPER = "en_AU.UTF-8";
-                LC_TELEPHONE = "en_AU.UTF-8";
-                LC_TIME = "en_AU.UTF-8";
+                # locale
+                time.timeZone = "Australia/Perth";
+                i18n.defaultLocale = "en_AU.UTF-8";
+                i18n.extraLocaleSettings = {
+                  LC_ADDRESS = "en_AU.UTF-8";
+                  LC_IDENTIFICATION = "en_AU.UTF-8";
+                  LC_MEASUREMENT = "en_AU.UTF-8";
+                  LC_MONETARY = "en_AU.UTF-8";
+                  LC_NAME = "en_AU.UTF-8";
+                  LC_NUMERIC = "en_AU.UTF-8";
+                  LC_PAPER = "en_AU.UTF-8";
+                  LC_TELEPHONE = "en_AU.UTF-8";
+                  LC_TIME = "en_AU.UTF-8";
+                };
+
+                # Enable the X11 windowing system.
+                services.xserver.enable = true;
+
+                # Enable the GNOME Desktop Environment.
+                services.xserver.displayManager.gdm.enable = true;
+                services.xserver.desktopManager.gnome.enable = true;
+
+                # Configure keymap in X11
+                services.xserver.xkb = {
+                  layout = "au";
+                  variant = "";
+                };
+
+                # Enable CUPS to print documents.
+                services.printing.enable = true;
+
+                # Enable sound with pipewire.
+                hardware.pulseaudio.enable = false;
+                security.rtkit.enable = true;
+                services.pipewire = {
+                  enable = true;
+                  alsa.enable = true;
+                  alsa.support32Bit = true;
+                  pulse.enable = true;
+                  # If you want to use JACK applications, uncomment this
+                  #jack.enable = true;
+
+                  # use the example session manager (no others are packaged yet so this is enabled by default,
+                  # no need to redefine it in your config for now)
+                  #media-session.enable = true;
+                };
+
+                users.users.${myUserName} = {
+                  isNormalUser = true;
+                  extraGroups = [
+                    "networkmanager"
+                    "wheel"
+                  ];
+                  shell = pkgs.zsh;
+                };
+
+                # Enable automatic login for the user.
+                services.xserver.displayManager.autoLogin.enable = true;
+                services.xserver.displayManager.autoLogin.user = "nel";
+
+                # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
+                systemd.services."getty@tty1".enable = false;
+                systemd.services."autovt@tty1".enable = false;
+
+                programs.firefox.enable = true;
+                programs.zsh.enable = true;
+
               };
-
-  # Enable the X11 windowing system.
-  services.xserver.enable = true;
-
-  # Enable the GNOME Desktop Environment.
-  services.xserver.displayManager.gdm.enable = true;
-  services.xserver.desktopManager.gnome.enable = true;
-
-  # Configure keymap in X11
-  services.xserver.xkb = {
-    layout = "au";
-    variant = "";
-  };
-
-  # Enable CUPS to print documents.
-  services.printing.enable = true;
-
-  # Enable sound with pipewire.
-  hardware.pulseaudio.enable = false;
-  security.rtkit.enable = true;
-  services.pipewire = {
-    enable = true;
-    alsa.enable = true;
-    alsa.support32Bit = true;
-    pulse.enable = true;
-    # If you want to use JACK applications, uncomment this
-    #jack.enable = true;
-
-    # use the example session manager (no others are packaged yet so this is enabled by default,
-    # no need to redefine it in your config for now)
-    #media-session.enable = true;
-  };
-
-              users.users.${myUserName} = {
-	        isNormalUser = true; 
-                extraGroups = [ "networkmanager" "wheel" ];
-		shell = pkgs.zsh;
-	      };
-
-  # Enable automatic login for the user.
-  services.xserver.displayManager.autoLogin.enable = true;
-  services.xserver.displayManager.autoLogin.user = "nel";
-
-  # Workaround for GNOME autologin: https://github.com/NixOS/nixpkgs/issues/103746#issuecomment-945091229
-  systemd.services."getty@tty1".enable = false;
-  systemd.services."autovt@tty1".enable = false;
-
-  programs.firefox.enable = true;
-  programs.zsh.enable = true;
-
-            };
             # nix-darwin specific configuration
-            darwin = { pkgs, ... }: {
-              security.pam.enableSudoTouchIdAuth = true;
-              services.nix-daemon.enable = true;
-              services.sketchybar = {
-                enable = true;
-              };
+            darwin =
+              { pkgs, ... }:
+              {
+                security.pam.enableSudoTouchIdAuth = true;
+                services.nix-daemon.enable = true;
+                services.sketchybar = {
+                  enable = true;
+                };
 
-              system.defaults.universalaccess.reduceMotion = true;
-            };
+                system.defaults.universalaccess.reduceMotion = true;
+              };
           };
         };
     };
