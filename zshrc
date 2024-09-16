@@ -1,5 +1,5 @@
 # nix config path additions
-export PATH=/etc/profiles/per-user/$USER/bin:/nix/var/nix/profiles/system/sw/bin:/usr/local/bin:$PATH
+export PATH=/run/wrappers/bin:/etc/profiles/per-user/$USER/bin:/nix/var/nix/profiles/system/sw/bin:/usr/local/bin:$PATH
 
 eval "$(fnm env --use-on-cd)"
 
