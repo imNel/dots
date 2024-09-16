@@ -26,28 +26,33 @@
         {
           # Configurations for Linux (NixOS) machines
           nixosConfigurations = {
-            # TODO: Change hostname from "example1" to something else.
-            example1 = self.nixos-flake.lib.mkLinuxSystem {
+            nixos = self.nixos-flake.lib.mkLinuxSystem {
               nixpkgs.hostPlatform = "x86_64-linux";
+              nix.extraOptions = ''
+                warn-dirty = false
+              '';
               imports = [
                 self.nixosModules.common # See below for "nixosModules"!
                 self.nixosModules.linux
                 # Your machine's configuration.nix goes here
                 ({ pkgs, ... }: {
                   # TODO: Put your /etc/nixos/hardware-configuration.nix here
-                  boot.loader.grub.device = "nodev";
-                  fileSystems."/" = {
-                    device = "/dev/disk/by-label/nixos";
-                    fsType = "btrfs";
-                  };
-                  system.stateVersion = "23.05";
+                  # imports = [
+                  #   ./hardware-configuration.nix
+                  # ];
+                  # boot.loader.grub.device = "nodev";
+                  # fileSystems."/" = {
+                  #   device = "/dev/disk/by-label/nixos";
+                  #   fsType = "btrfs";
+                  # };
+                  system.stateVersion = "24.05";
                 })
                 # Your home-manager configuration
                 self.nixosModules.home-manager
                 {
                   home-manager.users.${myUserName} = {
                     imports = [
-                      self.homeModules.common # See below for "homeModules"!
+                      self.homeModules.common
                       self.homeModules.linux
                     ];
                     home.stateVersion = "22.11";
@@ -84,7 +89,7 @@
                   home-manager.backupFileExtension = "backup";
                   home-manager.users.${myUserName} = {
                     imports = [
-                      self.homeModules.common # See below for "homeModules"!
+                      self.homeModules.common
                       self.homeModules.darwin
                     ];
                     home.stateVersion = "22.11";
@@ -99,7 +104,7 @@
             # Common nixos/nix-darwin configuration shared between Linux and macOS.
             common = { pkgs, ... }: {
               environment.systemPackages = with pkgs; [
-                vim gnumake
+                neovim gnumake
               ];
             };
             # NixOS specific configuration

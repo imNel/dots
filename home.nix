@@ -5,7 +5,7 @@
     homeModules = {
       # Common home-manager configuration shared between Linux and macOS.
       common = { pkgs, ... }: {
-        home.packages = with pkgs; [ fnm fzf loc onefetch ];
+        home.packages = with pkgs; [ fnm fzf loc onefetch azure-cli ];
         programs = {
           git = {
             enable = true;
@@ -63,7 +63,7 @@
       };
       # home-manager config specific to NixOS
       linux = {
-        xsession.enable = true;
+        # xsession.enable = true;
       };
       # home-manager config specific to Darwin
       darwin = {
