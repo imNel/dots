@@ -44,6 +44,10 @@
             azure-cli
           ];
           programs = {
+            wezterm = {
+              enable = true;
+              extraConfig = builtins.readFile ./config/wezterm.lua;
+            };
             git = {
               enable = true;
               userName = "Nel";
@@ -91,8 +95,8 @@
               vimAlias = true;
               extraLuaConfig = builtins.concatStringsSep "\n" (
                 builtins.map builtins.readFile [
-                  ./nvim/settings.lua
-                  ./nvim/keybinds.lua
+                  ./config/nvim/settings.lua
+                  ./config/nvim/keybinds.lua
                 ]
               );
               plugins = with pkgs.vimPlugins; [
