@@ -91,8 +91,8 @@
               vimAlias = true;
               extraLuaConfig = builtins.concatStringsSep "\n" (
                 builtins.map builtins.readFile [
-                  ./nvim/keybinds.lua
                   ./nvim/settings.lua
+                  ./nvim/keybinds.lua
                 ]
               );
               plugins = with pkgs.vimPlugins; [
