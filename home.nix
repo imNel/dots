@@ -112,6 +112,7 @@
                 cmp-path
                 cmp-buffer
                 cmp-nvim-lua
+                cmp-cmdline
                 friendly-snippets
                 supermaven-nvim
                 undotree

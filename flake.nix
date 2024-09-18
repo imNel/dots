@@ -165,14 +165,47 @@
                   gnumake
                   git
                   nixfmt-rfc-style
+                  nodejs
+                  cargo
+                  rustc
+                  gcc
                 ];
               };
             # NixOS specific configuration
             linux =
               { pkgs, ... }:
               {
-                boot.loader.systemd-boot.enable = true;
-                boot.loader.efi.canTouchEfiVariables = true;
+                boot = {
+                  loader.systemd-boot.enable = true;
+                  loader.efi.canTouchEfiVariables = true;
+
+                  # Hide the OS choice for bootloaders.
+                  # It's still possible to open the bootloader list by pressing any key
+                  # It will just not appear on screen unless a key is pressed
+                  loader.timeout = 0;
+
+                  # Enable "Silent Boot"
+                  consoleLogLevel = 0;
+                  initrd.verbose = false;
+                  kernelParams = [
+                    "quiet"
+                    "splash"
+                    "boot.shell_on_fail"
+                    "loglevel=3"
+                    "rd.systemd.show_status=false"
+                    "rd.udev.log_level=3"
+                    "udev.log_priority=3"
+                  ];
+
+                  plymouth = {
+                    enable = true;
+                    theme = "lone";
+                    themePackages = with pkgs; [
+                      # By default we would install all themes
+                      (adi1090x-plymouth-themes.override { selected_themes = [ "lone" ]; })
+                    ];
+                  };
+                };
 
                 networking.hostName = "nixos"; # Define your hostname.
                 networking.networkmanager.enable = true;
@@ -194,11 +227,24 @@
 
                 # Enable the X11 windowing system.
                 services.xserver.enable = true;
-
-                # Enable the GNOME Desktop Environment.
                 services.xserver.displayManager.gdm.enable = true;
-                services.xserver.desktopManager.gnome.enable = true;
-                programs.sway.enable = true;
+                services.xserver.displayManager.defaultSession = "sway";
+
+                # Enable the sway window manager.
+                programs.sway = {
+                  enable = true;
+                  xwayland.enable = true;
+                  wrapperFeatures.gtk = true;
+                  extraPackages = with pkgs; [
+                    mako
+                    wl-clipboard
+                    swaylock
+                    swayidle
+                    dmenu
+                    wmenu
+                  ];
+                };
+                services.gnome.gnome-keyring.enable = true;
 
                 # Configure keymap in X11
                 services.xserver.xkb = {
@@ -237,6 +283,19 @@
                 programs.firefox.enable = true;
                 programs.zsh.enable = true;
 
+                # Steam
+                programs.gamescope = {
+                  enable = true;
+                  capSysNice = true;
+                };
+                programs.steam = {
+                  enable = true;
+                  gamescopeSession.enable = true;
+                  remotePlay.openFirewall = true;
+                  dedicatedServer.openFirewall = true;
+                  localNetworkGameTransfers.openFirewall = true;
+                };
+                hardware.xone.enable = true;
               };
             # nix-darwin specific configuration
             darwin =
