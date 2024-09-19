@@ -228,9 +228,18 @@
                   ];
                 };
                 security.polkit.enable = true;
-
                 services.gnome.gnome-keyring.enable = true;
-                services.displayManager.defaultSession = "sway";
+
+                # https://discourse.nixos.org/t/autologin-hyprland/38159/12
+                services.greetd = {
+                  enable = true;
+                  settings = {
+                    default_session = {
+                      command = "sway";
+                      user = myUserName;
+                    };
+                  };
+                };
 
                 # Enable CUPS to print documents.
                 services.printing.enable = true;
@@ -270,7 +279,7 @@
                 };
                 programs.steam = {
                   enable = true;
-                  # gamescopeSession.enable = true; # disable this for now, try opening gamescope from sway
+                  gamescopeSession.enable = true;
                   remotePlay.openFirewall = true;
                   dedicatedServer.openFirewall = true;
                   localNetworkGameTransfers.openFirewall = true;
@@ -285,6 +294,40 @@
                   (import ./steam/switch-to-desktop.nix { inherit pkgs; })
                   pavucontrol
                 ];
+
+                # decky user
+                users.users.decky = {
+                  group = "decky";
+                  home = "/var/lib/decky-loader";
+                  isSystemUser = true;
+                };
+                users.groups.decky = { };
+                # decky service
+                systemd.services.decky-loader = {
+                  description = "Steam Deck Plugin Loader";
+
+                  wantedBy = [ "multi-user.target" ];
+                  after = [ "network.target" ];
+
+                  environment = {
+                    UNPRIVILEGED_USER = "decky";
+                    UNPRIVILEGED_PATH = "/var/lib/decky-loader";
+                    PLUGIN_PATH = "/var/lib/decky-loader/plugins";
+                  };
+
+                  path = [ ];
+
+                  preStart = ''
+                    mkdir -p "/var/lib/decky-loader"
+                    chown -R "decky:decky" "/var/lib/decky-loader"
+                  '';
+
+                  serviceConfig = {
+                    ExecStart = "${(import ./steam/decky-loader.nix { inherit pkgs; })}/bin/decky-loader";
+                    KillMode = "process";
+                    TimeoutStopSec = 45;
+                  };
+                };
               };
             # nix-darwin specific configuration
             darwin =
