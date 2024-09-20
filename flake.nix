@@ -94,7 +94,7 @@
                     # networking.interfaces.eno1.useDHCP = lib.mkDefault true;
 
                     nixpkgs.hostPlatform = lib.mkDefault "x86_64-linux";
-                    hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableRedistributableFirmware;
+                    hardware.cpu.amd.updateMicrocode = lib.mkDefault config.hardware.enableAllFirmware;
                     system.stateVersion = "24.05";
                   }
                 )
@@ -169,6 +169,7 @@
                   cargo
                   rustc
                   gcc
+                  python39Full
                 ];
               };
             # NixOS specific configuration
@@ -214,50 +215,50 @@
                 i18n.defaultLocale = "en_AU.UTF-8";
 
                 # Enable the sway window manager.
-                programs.sway = {
-                  enable = true;
-                  xwayland.enable = true;
-                  wrapperFeatures.gtk = true;
-                  extraPackages = with pkgs; [
-                    mako
-                    wl-clipboard
-                    swaylock
-                    swayidle
-                    dmenu
-                    wmenu
-                  ];
-                };
-                security.polkit.enable = true;
-                services.gnome.gnome-keyring.enable = true;
+                # programs.sway = {
+                #   enable = true;
+                #   xwayland.enable = true;
+                #   wrapperFeatures.gtk = true;
+                #   extraPackages = with pkgs; [
+                #     mako
+                #     wl-clipboard
+                #     swaylock
+                #     swayidle
+                #     dmenu
+                #     wmenu
+                #   ];
+                # };
+                # security.polkit.enable = true;
+                # services.gnome.gnome-keyring.enable = true;
 
                 # https://discourse.nixos.org/t/autologin-hyprland/38159/12
-                services.greetd = {
-                  enable = true;
-                  settings = {
-                    default_session = {
-                      command = "sway";
-                      user = myUserName;
-                    };
-                  };
-                };
+                # services.greetd = {
+                #   enable = true;
+                #   settings = {
+                #     default_session = {
+                #       command = "sway";
+                #       user = myUserName;
+                #     };
+                #   };
+                # };
+
+                # KDE
+                services.xserver.enable = true;
+                services.displayManager.sddm.enable = true;
+                services.displayManager.sddm.wayland.enable = true;
+                services.desktopManager.plasma6.enable = true;
+                # services.displayManager.defaultSession = "sway";
 
                 # Enable CUPS to print documents.
                 services.printing.enable = true;
 
+                hardware.firmware = [ pkgs.rtl8761b-firmware ];
+
                 # Enable sound with pipewire.
-                hardware.pulseaudio.enable = false;
-                security.rtkit.enable = true;
                 services.pipewire = {
                   enable = true;
                   alsa.enable = true;
-                  alsa.support32Bit = true;
                   pulse.enable = true;
-                  # If you want to use JACK applications, uncomment this
-                  #jack.enable = true;
-
-                  # use the example session manager (no others are packaged yet so this is enabled by default,
-                  # no need to redefine it in your config for now)
-                  #media-session.enable = true;
                 };
 
                 users.users.${myUserName} = {
@@ -265,6 +266,7 @@
                   extraGroups = [
                     "networkmanager"
                     "wheel"
+                    "audio"
                   ];
                   shell = pkgs.zsh;
                 };
@@ -286,13 +288,25 @@
                 };
                 hardware.xone.enable = true;
 
-                hardware.bluetooth.enable = true;
-                hardware.bluetooth.powerOnBoot = true;
-                services.blueman.enable = true;
+                hardware.bluetooth = {
+                  enable = true;
+                };
+
+                systemd.user.services.mpris-proxy = {
+                  description = "Mpris proxy";
+                  after = [
+                    "network.target"
+                    "sound.target"
+                  ];
+                  wantedBy = [ "default.target" ];
+                  serviceConfig.ExecStart = "${pkgs.bluez}/bin/mpris-proxy";
+                };
 
                 environment.systemPackages = with pkgs; [
                   (import ./steam/switch-to-desktop.nix { inherit pkgs; })
                   pavucontrol
+                  xfce.thunar
+                  unzip
                 ];
 
                 # decky user
