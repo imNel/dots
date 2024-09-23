@@ -42,6 +42,7 @@
             loc
             onefetch
             azure-cli
+            vesktop
           ];
           programs = {
             wezterm = {
@@ -132,9 +133,41 @@
           };
         };
       # home-manager config specific to NixOS
-      linux = {
-        # xsession.enable = true;
-      };
+      linux =
+        { pkgs, ... }:
+        {
+          # xsession.enable = true;
+          wayland.windowManager.sway = {
+            enable = true;
+            package = pkgs.swayfx;
+            checkConfig = false; # https://github.com/nix-community/home-manager/issues/5379
+            config = {
+              modifier = "Mod4";
+              terminal = "wezterm";
+              menu = "${pkgs.wmenu}/bin/wmenu-run";
+              gaps = {
+                inner = 4;
+                outer = 4;
+              };
+              # This is specific for my home PC, will need to be made dynamic
+              output = {
+                HDMI-A-1 = {
+                  scale = "1.0";
+                  res = "3440x1440@100Hz";
+                  pos = "0 0";
+                };
+                DP-1 = {
+                  scale = "1.0";
+                  res = "1920x1080@165Hz";
+                  pos = "2752 72";
+                };
+              };
+            };
+            extraConfig = ''
+              corner_radius 4
+            '';
+          };
+        };
       # home-manager config specific to Darwin
       darwin = {
         # targets.darwin.search = "Bing";

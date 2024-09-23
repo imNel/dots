@@ -179,33 +179,6 @@
                 boot = {
                   loader.systemd-boot.enable = true;
                   loader.efi.canTouchEfiVariables = true;
-
-                  # Hide the OS choice for bootloaders.
-                  # It's still possible to open the bootloader list by pressing any key
-                  # It will just not appear on screen unless a key is pressed
-                  # loader.timeout = 0;
-
-                  # Enable "Silent Boot"
-                  # consoleLogLevel = 0;
-                  # initrd.verbose = false;
-                  # kernelParams = [
-                  #   "quiet"
-                  #   "splash"
-                  #   "boot.shell_on_fail"
-                  #   "loglevel=3"
-                  #   "rd.systemd.show_status=false"
-                  #   "rd.udev.log_level=3"
-                  #   "udev.log_priority=3"
-                  # ];
-
-                  # plymouth = {
-                  #   enable = true;
-                  #   theme = "lone";
-                  #   themePackages = with pkgs; [
-                  #     # By default we would install all themes
-                  #     (adi1090x-plymouth-themes.override { selected_themes = [ "lone" ]; })
-                  #   ];
-                  # };
                 };
 
                 networking.networkmanager.enable = true;
@@ -215,32 +188,22 @@
                 i18n.defaultLocale = "en_AU.UTF-8";
 
                 # Enable the sway window manager.
-                # programs.sway = {
-                #   enable = true;
-                #   xwayland.enable = true;
-                #   wrapperFeatures.gtk = true;
-                #   extraPackages = with pkgs; [
-                #     mako
-                #     wl-clipboard
-                #     swaylock
-                #     swayidle
-                #     dmenu
-                #     wmenu
-                #   ];
-                # };
-                # security.polkit.enable = true;
-                # services.gnome.gnome-keyring.enable = true;
-
-                # https://discourse.nixos.org/t/autologin-hyprland/38159/12
-                # services.greetd = {
-                #   enable = true;
-                #   settings = {
-                #     default_session = {
-                #       command = "sway";
-                #       user = myUserName;
-                #     };
-                #   };
-                # };
+                programs.sway = {
+                  enable = true;
+                  package = pkgs.swayfx;
+                  xwayland.enable = true;
+                  wrapperFeatures.gtk = true;
+                  extraPackages = with pkgs; [
+                    mako
+                    wl-clipboard
+                    swaylock
+                    swayidle
+                    wmenu
+                    swaybg
+                  ];
+                };
+                security.polkit.enable = true;
+                services.gnome.gnome-keyring.enable = true;
 
                 # KDE
                 services.xserver.enable = true;
@@ -307,6 +270,7 @@
                   pavucontrol
                   xfce.thunar
                   unzip
+                  wdisplays
                 ];
 
                 # decky user
