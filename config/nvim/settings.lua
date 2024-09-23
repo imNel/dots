@@ -85,6 +85,7 @@ local servers = {
 			telemetry = { enable = false },
 		},
 	},
+  nil_ls = {},
 }
 
 require("mason").setup()
