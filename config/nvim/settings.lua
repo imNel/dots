@@ -37,9 +37,9 @@ o.concealcursor = ""
 vim.cmd.colorscheme("gruvbox-material")
 
 -- Comments
-require('kommentary.config').configure_language('default', {
-  single_line_comment_string = 'auto',
-  multi_line_comment_strings = 'auto',
+require("kommentary.config").configure_language("default", {
+	single_line_comment_string = "auto",
+	multi_line_comment_strings = "auto",
 })
 
 -- Telescope
@@ -85,7 +85,7 @@ local servers = {
 			telemetry = { enable = false },
 		},
 	},
-  nil_ls = {},
+	nil_ls = {},
 }
 
 require("mason").setup()
@@ -100,6 +100,23 @@ capabilities = require("cmp_nvim_lsp").default_capabilities(capabilities)
 
 require("mason-lspconfig").setup_handlers({
 	function(server_name)
+		if server_name == "kotlin_language_server" then
+			require("lspconfig")["kotlin_language_server"].setup({
+				capabilities = capabilities,
+				on_attach = nil,
+				settings = {
+					kotlin = {
+						compiler = {
+							jvm = {
+								target = "17",
+							},
+						},
+					},
+				},
+				filetypes = (servers[server_name] or {}).filetypes,
+			})
+			return
+		end
 		require("lspconfig")[server_name].setup({
 			capabilities = capabilities,
 			on_attach = nil,
@@ -191,7 +208,7 @@ require("conform").setup({
 		scss = { "prettier" },
 		css = { "prettier" },
 		java = { "google-java-format" },
-    nix = { "nixfmt" },
+		nix = { "nixfmt" },
 	},
 	-- format_on_save = {
 	-- 	-- These options will be passed to conform.format()

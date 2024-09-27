@@ -162,6 +162,7 @@
                 nixpkgs.config.allowUnfree = true;
                 environment.systemPackages = with pkgs; [
                   neovim
+                  go
                   gnumake
                   git
                   nixfmt-rfc-style
@@ -171,6 +172,7 @@
                   gcc
                   python39Full
                   prismlauncher
+                  zulu17
                 ];
               };
             # NixOS specific configuration

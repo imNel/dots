@@ -38,6 +38,7 @@
         {
           home.packages = with pkgs; [
             fnm
+            just
             fzf
             loc
             onefetch
@@ -57,6 +58,9 @@
                 enable = true;
                 # tokyonight.enable = true;
               };
+              aliases = {
+                churn = "!git log --all -M -C --name-only --format='format:' -- | sort | grep -v '^$' | uniq -c | sort -nr | bat";
+              };
             };
 
             zsh = {
@@ -73,6 +77,7 @@
                 hpm = "pnpm hpm";
                 h = "z huddler";
               };
+
             };
 
             eza = {
