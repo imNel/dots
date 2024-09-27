@@ -170,6 +170,7 @@
                   rustc
                   gcc
                   python39Full
+                  prismlauncher
                 ];
               };
             # NixOS specific configuration
@@ -215,7 +216,6 @@
                 # Enable CUPS to print documents.
                 services.printing.enable = true;
 
-                hardware.firmware = [ pkgs.rtl8761b-firmware ];
 
                 # Enable sound with pipewire.
                 services.pipewire = {
@@ -251,9 +251,8 @@
                 };
                 hardware.xone.enable = true;
 
-                hardware.bluetooth = {
-                  enable = true;
-                };
+                hardware.bluetooth.enable = true;
+                hardware.firmware = [ pkgs.rtl8761b-firmware ];
 
                 systemd.user.services.mpris-proxy = {
                   description = "Mpris proxy";
