@@ -122,7 +122,10 @@
               '';
               homebrew = {
                 enable = true;
-                casks = [ "nikitabobko/tap/aerospace" ];
+                casks = [
+                  "nikitabobko/tap/aerospace" # TODO: Start on login
+                  "jordanbaird-ice" # TODO: Start on login
+                ];
               };
               imports = [
                 self.nixosModules.common # See below for "nixosModules"!
@@ -217,7 +220,6 @@
 
                 # Enable CUPS to print documents.
                 services.printing.enable = true;
-
 
                 # Enable sound with pipewire.
                 services.pipewire = {
@@ -314,11 +316,19 @@
               {
                 security.pam.enableSudoTouchIdAuth = true;
                 services.nix-daemon.enable = true;
-                services.sketchybar = {
+
+                # active_color=0xffD06396 inactive_color=0xff2A313F width=1 hidpi=on order=above
+                services.jankyborders = {
                   enable = true;
+                  active_color = "0xffD06396";
+                  inactive_color = "0xff2A313F";
+                  width = 1.0;
+                  hidpi = true;
+                  order = "above";
                 };
 
                 system.defaults.universalaccess.reduceMotion = true;
+                system.defaults.NSGlobalDomain._HIHideMenuBar = false;
               };
           };
         };
