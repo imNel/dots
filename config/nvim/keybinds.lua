@@ -59,9 +59,6 @@ set("n", "gi", "<cmd>Telescope lsp_implementations<CR>")
 set("n", "gl", function()
 	vim.diagnostic.open_float()
 end)
-set("n", "gt", function()
-	require("tserror").show_diagnostics()
-end)
 set("n", "gj", function()
 	vim.diagnostic.goto_next({ popup_opts = { focusable = false } })
 end)
@@ -75,10 +72,3 @@ set("n", "<leader>m", "<cmd>Telescope monorepo<CR>")
 set("n", "<leader>a", function()
 	require("monorepo").toggle_project()
 end)
-
--- Git
-local g = "<leader>g"
-set("n", g .. "s", "<cmd>Telescope git_status<CR>")
-set("n", g .. "u", "<cmd>GitBlameOpenCommitURL<CR>")
-set("n", g .. "?", "<cmd>GitBlameToggle<CR>")
-
