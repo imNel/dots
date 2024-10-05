@@ -1,5 +1,3 @@
-local wezterm = require("wezterm")
-
 local is_darwin <const> = wezterm.target_triple:find("darwin") ~= nil
 
 return {
@@ -12,10 +10,10 @@ return {
 	enable_scroll_bar = false,
 	check_for_updates = false,
 	window_padding = {
-		left = 0,
-		right = 0,
-		bottom = 0,
-		top = 0,
+		left = 8,
+		right = 8,
+		bottom = 8,
+		top = 8,
 	},
 	tab_max_width = 24,
 }
