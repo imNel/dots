@@ -34,7 +34,9 @@ o.conceallevel = 0
 o.concealcursor = ""
 
 -- Theme
-vim.cmd.colorscheme("gruvbox-material")
+-- vim.cmd.colorscheme("monopink") -- WIP Custom theme
+-- vim.cmd.colorscheme("gruvbox-material")
+vim.cmd.colorscheme("rose-pine")
 
 -- Comments
 require("kommentary.config").configure_language("default", {
@@ -78,7 +80,7 @@ require("nvim-treesitter.configs").setup({
 local servers = {
 	-- pyright = {},
 	rust_analyzer = {},
-	tsserver = {},
+	ts_ls = {},
 	lua_ls = {
 		Lua = {
 			workspace = { checkThirdParty = false },

@@ -21,8 +21,8 @@
             src = pkgs.fetchFromGitHub {
               owner = "supermaven-inc";
               repo = "supermaven-nvim";
-              rev = "7698b982ae96a5decca84219390e273bd428dc86";
-              hash = "sha256-tzrWDjlBMB4r4bI78CXrsTqjgEaks3Lc7k+gYJUUx14=";
+              rev = "aecec7090f1da456ad5683f5c6c3640c2a745dc1";
+              hash = "sha256-dYsu16uNsbZzI7QhXV3QBkvJy+0MndfGwcb1zQi5ic0=";
             };
           };
           sonarlint-nvim = pkgs.vimUtils.buildVimPlugin {
@@ -46,9 +46,17 @@
             vesktop
           ];
           programs = {
-            wezterm = {
+            kitty = {
               enable = true;
-              extraConfig = builtins.readFile ./config/wezterm.lua;
+              font = {
+                name = "Twilio Sans Mono";
+                size = 16;
+              };
+              settings = {
+                macos_titlebar_color = "#191724";
+                window_padding_width = 4;
+              };
+              extraConfig = builtins.readFile ./config/kitty.conf;
             };
             git = {
               enable = true;
@@ -133,6 +141,8 @@
                 gruvbox-material
                 nvim-web-devicons
                 nvim-colorizer-lua
+                colorbuddy-nvim
+                rose-pine
               ];
             };
           };
@@ -148,7 +158,7 @@
             checkConfig = false; # https://github.com/nix-community/home-manager/issues/5379
             config = {
               modifier = "Mod4";
-              terminal = "wezterm";
+              terminal = "kitty";
               menu = "${pkgs.wmenu}/bin/wmenu-run";
               gaps = {
                 inner = 4;

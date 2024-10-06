@@ -4,7 +4,7 @@ export PATH=/run/wrappers/bin:/etc/profiles/per-user/$USER/bin:/nix/var/nix/prof
 eval "$(fnm env --use-on-cd)"
 
 # other stuff, probably need to remove later
-export PATH="$PATH:/Applications/WezTerm.app/Contents/MacOS:$HOME/Library/pnpm:$HOME/.cargo/bin:$HOME/.local/bin:$HOME/.local/share/fnm:$HOME/.emacs.d/bin:$HOME/Clones/kotlin-language-server/server/build/install/server/bin:/opt/homebrew/bin/"
+export PATH="$PATH:$HOME/Library/pnpm:$HOME/.cargo/bin:$HOME/.local/bin:$HOME/.local/share/fnm:$HOME/.emacs.d/bin:$HOME/Clones/kotlin-language-server/server/build/install/server/bin:/opt/homebrew/bin/"
 
 export EDITOR="nvim"
 export XDG_CONFIG_HOME="$HOME/.config"
