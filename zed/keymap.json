@@ -1,0 +1,33 @@
+[
+  {
+    "context": "Editor && vim_mode==normal",
+    "bindings": {
+      // Window Remaps
+      "ctrl-w v": "pane::SplitRight",
+      "ctrl-w s": "pane::SplitDown",
+      "ctrl-w z": "workspace::ToggleZoom",
+      "ctrl-w c": "pane::CloseAllItems",
+      "ctrl-h": ["workspace::SendKeystrokes", "ctrl-w h"],
+      "ctrl-j": ["workspace::SendKeystrokes", "ctrl-w j"],
+      "ctrl-k": ["workspace::SendKeystrokes", "ctrl-w k"],
+      "ctrl-l": ["workspace::SendKeystrokes", "ctrl-w l"],
+      "ctrl-p": "file_finder::Toggle",
+      // Leaders
+      "space f": "editor::Format",
+      "space e": "workspace::ToggleLeftDock"
+    }
+  },
+  {
+    "context": "ProjectPanel",
+    "bindings": {
+      "space e": "workspace::ToggleLeftDock",
+      "ctrl-p": "file_finder::Toggle"
+    }
+  },
+  {
+    "context": "Editor && vim_mode == normal && vim_operator == none && !VimWaiting",
+    "bindings": {
+      "space g": ["task::Spawn", { "task_name": "lazygit" }]
+    }
+  }
+]
