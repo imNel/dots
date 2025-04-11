@@ -1,0 +1,3 @@
+*.lua
+!/init.lua
+!/lua/plugins.lua
