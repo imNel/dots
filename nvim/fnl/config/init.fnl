@@ -1,80 +1,87 @@
-(local o vim.opt)
-(local g vim.g)
-(set g.mapleader " ")
-(set g.maplocalleader " ")
-(set o.number true)
-(set o.numberwidth 4)
-(set o.relativenumber true)
-(set o.tabstop 2)
-(set o.softtabstop 2)
-(set o.shiftwidth 2)
-(set o.expandtab true)
-(set o.smartindent true)
-(set o.splitright true)
-(set o.splitbelow true)
-(set o.wrap false)
-(set o.scrolloff 8)
-(set o.termguicolors true)
-(set o.conceallevel 0)
-(set o.concealcursor "")
+(set vim.g.mapleader " ")
+(set vim.g.maplocalleader " ")
+(set vim.opt.number true)
+(set vim.opt.numberwidth 4)
+(set vim.opt.relativenumber true)
+(set vim.opt.tabstop 2)
+(set vim.opt.softtabstop 2)
+(set vim.opt.shiftwidth 2)
+(set vim.opt.expandtab true)
+(set vim.opt.smartindent true)
+(set vim.opt.splitright true)
+(set vim.opt.splitbelow true)
+(set vim.opt.wrap false)
+(set vim.opt.scrolloff 8)
+(set vim.opt.termguicolors true)
+(set vim.opt.conceallevel 0)
+(set vim.opt.concealcursor "")
 
-(local ___set___ vim.keymap.set)
-(___set___ :n :<C-w>z
-           (fn []
-             ((. (require :zen-mode) :toggle))))
+; Window Keybinds
+(vim.keymap.set :n :<C-w>z
+                (fn []
+                  ((. (require :zen-mode) :toggle))))
 
-(___set___ :n :<leader>y "\"+y")
-(___set___ :v :<leader>y "\"+y")
-(___set___ :n :<leader>Y "\"+Y")
-(___set___ :n :<leader>d "\"_d")
-(___set___ :v :<leader>d "\"_d")
-(___set___ :n :<ESC> "<cmd>:noh<CR><ESC>")
-(___set___ :v :J ":m '>+1<CR>gv=gv")
-(___set___ :v :K ":m '<-2<CR>gv=gv")
-(___set___ :n :J "mzJ`z")
-(___set___ :n :H "^")
-(___set___ :n :L "$")
-(___set___ :n :<C-u> :<C-u>zz)
-(___set___ :n :<C-d> :<C-d>zz)
-(___set___ :n :n :nzzzv)
-(___set___ :n :N :Nzzzv)
-(___set___ :n :<C-p>
-           (fn []
-             ((. (require :telescope.builtin) :find_files))))
+; System Clipboard
+(vim.keymap.set :n :<leader>y "\"+y")
+(vim.keymap.set :v :<leader>y "\"+y")
+(vim.keymap.set :n :<leader>Y "\"+Y")
 
-(___set___ :n :<C-space>
-           (fn []
-             ((. (require :telescope.builtin) :live_grep))))
+; Void Clipboard
+(vim.keymap.set :n :<leader>d "\"_d")
+(vim.keymap.set :v :<leader>d "\"_d")
 
-(___set___ :n :<leader>b
-           (fn []
-             ((. (require :telescope.builtin) :buffers))))
+; Handy Keybinds
+(vim.keymap.set :n :<ESC> "<cmd>:noh<CR><ESC>")
+(vim.keymap.set :v :J ":m '>+1<CR>gv=gv")
+(vim.keymap.set :v :K ":m '<-2<CR>gv=gv")
+(vim.keymap.set :n :J "mzJ`z")
+(vim.keymap.set :n :H "^")
+(vim.keymap.set :n :L "$")
 
-(___set___ :n :<leader>w
-           (fn []
-             ((. (require :telescope.builtin) :diagnostics))))
+; Keeping stuff centred
+(vim.keymap.set :n :<C-u> :<C-u>zz)
+(vim.keymap.set :n :<C-d> :<C-d>zz)
+(vim.keymap.set :n :n :nzzzv)
+(vim.keymap.set :n :N :Nzzzv)
 
-(___set___ :n :<leader>e :<cmd>Ex<CR>)
-(___set___ :n :<leader>u :<cmd>UndotreeToggle<CR><cmd>UndotreeFocus<CR>)
-(___set___ :n :gd "<cmd>Telescope lsp_definitions<CR>")
-(___set___ :n :gh (fn [] (vim.lsp.buf.hover {:silent true})))
-(___set___ :n :gn (fn [] (vim.lsp.buf.rename)))
-(___set___ :n :gr "<cmd>Telescope lsp_references<CR>")
-(___set___ :n :gi "<cmd>Telescope lsp_implementations<CR>")
-(___set___ :n :gl (fn [] (vim.diagnostic.open_float)))
-(___set___ :n :gj
-           (fn []
-             (vim.diagnostic.goto_next {:popup_opts {:focusable false}})))
+; Telescope, LSP, Everything else tbh
+(vim.keymap.set :n :<C-p>
+                (fn []
+                  ((. (require :telescope.builtin) :find_files))))
 
-(___set___ :n :gk
-           (fn []
-             (vim.diagnostic.goto_prev {:popup_opts {:focusable false}})))
+(vim.keymap.set :n :<C-space>
+                (fn []
+                  ((. (require :telescope.builtin) :live_grep))))
 
-(___set___ :n :<leader>f
-           (fn []
-             ((. (require :conform) :format))))
+(vim.keymap.set :n :<leader>b
+                (fn []
+                  ((. (require :telescope.builtin) :buffers))))
 
-(___set___ :n :<leader>m "<cmd>Telescope monorepo<CR>")
-(___set___ :n :<leader>a
-           (fn []
-             ((. (require :monorepo) :toggle_project))))
+(vim.keymap.set :n :<leader>w
+                (fn []
+                  ((. (require :telescope.builtin) :diagnostics))))
+
+(vim.keymap.set :n :<leader>e :<cmd>Ex<CR>)
+(vim.keymap.set :n :<leader>u :<cmd>UndotreeToggle<CR><cmd>UndotreeFocus<CR>)
+(vim.keymap.set :n :gd "<cmd>Telescope lsp_definitions<CR>")
+(vim.keymap.set :n :gh (fn [] (vim.lsp.buf.hover {:silent true})))
+(vim.keymap.set :n :gn (fn [] (vim.lsp.buf.rename)))
+(vim.keymap.set :n :gr "<cmd>Telescope lsp_references<CR>")
+(vim.keymap.set :n :gi "<cmd>Telescope lsp_implementations<CR>")
+(vim.keymap.set :n :gl (fn [] (vim.diagnostic.open_float)))
+(vim.keymap.set :n :gj
+                (fn []
+                  (vim.diagnostic.goto_next {:popup_opts {:focusable false}})))
+
+(vim.keymap.set :n :gk
+                (fn []
+                  (vim.diagnostic.goto_prev {:popup_opts {:focusable false}})))
+
+(vim.keymap.set :n :<leader>f
+                (fn []
+                  ((. (require :conform) :format))))
+
+(vim.keymap.set :n :<leader>m "<cmd>Telescope monorepo<CR>")
+(vim.keymap.set :n :<leader>a
+                (fn []
+                  ((. (require :monorepo) :toggle_project))))
