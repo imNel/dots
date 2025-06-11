@@ -1,4 +1,5 @@
 tap 'FelixKratz/formulae'
+tap 'd12frosted/emacs-plus'
 
 cask 'raycast'
 cask 'zen-browser'
@@ -31,3 +32,4 @@ brew 'zsh'
 brew 'fish'
 brew 'borders'
 brew 'fnlfmt'
+brew 'emacs-plus'
