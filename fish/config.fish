@@ -3,6 +3,7 @@ set -U EDITOR nvim
 fish_default_key_bindings
 
 fish_add_path /opt/homebrew/bin/
+fish_add_path $HOME/.local/bin/
 
 alias lg="lazygit"
 alias ls="eza"
@@ -14,8 +15,8 @@ zoxide init fish | source
 fnm env --use-on-cd --shell fish | source
 
 # pnpm
-set -gx PNPM_HOME /Users/nel/Library/pnpm
+set -gx PNPM_HOME "/Users/nel/Library/pnpm"
 if not string match -q -- $PNPM_HOME $PATH
-    set -gx PATH "$PNPM_HOME" $PATH
+  set -gx PATH "$PNPM_HOME" $PATH
 end
 # pnpm end
