@@ -20,5 +20,7 @@ vim.loader.enable()
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+require("config")
+
 -- Setup lazy.nvim
 require("lazy").setup("plugins")
