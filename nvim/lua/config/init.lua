@@ -13,8 +13,8 @@ vim.opt.splitbelow = true
 vim.opt.wrap = false
 vim.opt.scrolloff = 8
 vim.opt.termguicolors = true
-vim.opt.conceallevel = 0
-vim.opt.concealcursor = ""
+vim.opt.conceallevel = 2
+-- vim.opt.concealcursor = ""
 
 vim.keymap.set("n", "<C-w>z", function()
 	return require("zen-mode").toggle()
@@ -77,12 +77,14 @@ local function _10_()
 	return vim.diagnostic.goto_prev({ popup_opts = { focusable = false } })
 end
 vim.keymap.set("n", "gk", _10_)
-local function _11_()
+vim.keymap.set("n", "<leader>f", function()
 	return require("conform").format()
-end
-vim.keymap.set("n", "<leader>f", _11_)
+end)
 vim.keymap.set("n", "<leader>m", "<cmd>Telescope monorepo<CR>")
 local function _12_()
 	return require("monorepo").toggle_project()
 end
-return vim.keymap.set("n", "<leader>a", _12_)
+vim.keymap.set("n", "<leader>a", _12_)
+vim.keymap.set("n", "<leader>sl", function()
+	vim.cmd("source %")
+end)

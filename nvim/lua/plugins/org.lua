@@ -1,11 +1,5 @@
 return {
 	{
-		"folke/tokyonight.nvim",
-		lazy = false,
-		priority = 1000,
-		opts = {},
-	},
-	{
 		"nvim-orgmode/orgmode",
 		event = "VeryLazy",
 		main = "orgmode",
@@ -15,9 +9,23 @@ return {
 			org_startup_indented = true,
 		},
 	},
+	-- {
+	-- 	"lukas-reineke/headlines.nvim",
+	-- 	dependencies = "orgmode",
+	-- 	opts = {},
+	-- },
 	{
-		"lukas-reineke/headlines.nvim",
+		"akinsho/org-bullets.nvim",
 		dependencies = "orgmode",
-    opts = {}
+		opts = {
+			concealcursor = true,
+			symbols = {
+				checkboxes = {
+					half = { "-", "@org.checkbox.halfchecked" },
+					done = { "", "@org.keyword.done" },
+					todo = { " ", "@org.keyword.todo" },
+				},
+			},
+		},
 	},
 }

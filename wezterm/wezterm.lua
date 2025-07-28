@@ -2,22 +2,22 @@ local wezterm = require("wezterm")
 local config = wezterm.config_builder()
 
 -- Color options
-config.color_scheme = "NvimDark"
+config.color_scheme = "nord"
 config.colors = {
 	tab_bar = {
-		background = "#14161B",
+		background = "#2E3440",
 		inactive_tab = {
-			bg_color = "#14161B",
-			fg_color = "#C4C6CD",
+			bg_color = "#2E3440",
+			fg_color = "#616E88",
 		},
 		active_tab = {
-			bg_color = "#C4C6CD",
-			fg_color = "#14161B",
+			bg_color = "#D8DEE9",
+			fg_color = "#2E3440",
 		},
 	},
 }
 
--- config.font = wezterm.font("Departure Mono")
+config.font = wezterm.font("ZedMono Nerd Font Mono")
 
 config.keys = {
 	{
@@ -41,13 +41,13 @@ config.keys = {
 			end
 		end),
 	},
-    {
-    key = "g",
-    mods = "CMD",
-    action = wezterm.action.SpawnCommandInNewTab {
-      args = { os.getenv("SHELL"), "-c", "lazygit" },
-    },
-  },
+	{
+		key = "g",
+		mods = "CMD",
+		action = wezterm.action.SpawnCommandInNewTab({
+			args = { os.getenv("SHELL"), "-c", "lazygit" },
+		}),
+	},
 }
 
 config.use_fancy_tab_bar = false
