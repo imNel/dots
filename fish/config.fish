@@ -12,7 +12,6 @@ alias hpm="pnpm hpm"
 
 starship init fish | source
 zoxide init fish | source
-fnm env --use-on-cd --shell fish | source
 
 # pnpm
 set -gx PNPM_HOME "/Users/nel/Library/pnpm"
