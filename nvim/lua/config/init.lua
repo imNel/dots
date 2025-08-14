@@ -88,3 +88,10 @@ vim.keymap.set("n", "<leader>a", _12_)
 vim.keymap.set("n", "<leader>sl", function()
 	vim.cmd("source %")
 end)
+
+vim.api.nvim_create_autocmd("FileType", {
+  pattern = "org",
+  callback = function()
+    vim.opt_local.textwidth = 80
+  end,
+})

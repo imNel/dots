@@ -18,6 +18,7 @@ config.colors = {
 }
 
 config.font = wezterm.font("ZedMono Nerd Font Mono")
+config.font_size = 14
 
 config.keys = {
 	{

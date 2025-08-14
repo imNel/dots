@@ -14,14 +14,20 @@ set $down j
 set $up k
 set $right l
 # Your preferred terminal emulator
-set $term foot
+set $term wezterm
 # Your preferred application launcher
-set $menu wmenu-run
+set $menu fuzzel
+
+### Theme Vars
+set $fg #ECEFF4
+set $bg #2E3440
+set $light-bg #3b4252
+set $primary #81A1C1
 
 ### Output configuration
 #
 # Default wallpaper (more resolutions are available in /usr/share/backgrounds/sway/)
-output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
+output * bg #000000 solid_color
 #
 # Example configuration:
 #
@@ -71,7 +77,7 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
     bindsym $mod+Shift+q kill
 
     # Start your launcher
-    bindsym $mod+d exec $menu
+    bindsym $mod+space exec $menu
 
     # Drag floating windows by holding down $mod and left mouse button.
     # Resize them with right mouse button + $mod.
@@ -112,6 +118,17 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
 #
 # Workspaces:
 #
+    workspace 0 output DP-1
+    workspace 1 output DP-3
+    workspace 2 output DP-3
+    workspace 3 output DP-3
+    workspace 4 output DP-3
+    workspace 5 output DP-3
+    workspace 6 output DP-3
+    workspace 7 output DP-3
+    workspace 8 output DP-3
+    workspace 9 output DP-3
+
     # Switch to workspace
     bindsym $mod+1 workspace number 1
     bindsym $mod+2 workspace number 2
@@ -122,7 +139,7 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
     bindsym $mod+7 workspace number 7
     bindsym $mod+8 workspace number 8
     bindsym $mod+9 workspace number 9
-    bindsym $mod+0 workspace number 10
+    bindsym $mod+0 workspace number 0
     # Move focused container to workspace
     bindsym $mod+Shift+1 move container to workspace number 1
     bindsym $mod+Shift+2 move container to workspace number 2
@@ -133,7 +150,7 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
     bindsym $mod+Shift+7 move container to workspace number 7
     bindsym $mod+Shift+8 move container to workspace number 8
     bindsym $mod+Shift+9 move container to workspace number 9
-    bindsym $mod+Shift+0 move container to workspace number 10
+    bindsym $mod+Shift+0 move container to workspace number 0
     # Note: workspaces can have any name you want, not just numbers.
     # We just use 1-10 as the default.
 #
@@ -154,10 +171,10 @@ output * bg /usr/share/backgrounds/sway/Sway_Wallpaper_Blue_1920x1080.png fill
     bindsym $mod+f fullscreen
 
     # Toggle the current focus between tiling and floating mode
-    bindsym $mod+Shift+space floating toggle
+    bindsym $mod+Shift+f floating toggle
 
     # Swap focus between the tiling area and the floating area
-    bindsym $mod+space focus mode_toggle
+    # bindsym $mod+shift+f focus mode_toggle
 
     # Move focus to the parent container
     bindsym $mod+a focus parent
@@ -212,7 +229,10 @@ bindsym $mod+r mode "resize"
     bindsym Print exec grim
 
 ### My theme shit
-client.focused #605A52 #605A52 #f7f3ee 
+
+# client.focused $primary $primary $fg
+font pango:ZedMono Nerd Font 12
+
 #
 # Status Bar:
 #
@@ -224,12 +244,12 @@ bar {
     # The default just shows the current date and time.
     status_command i3status
 
-    colors {
-        statusline #605A52
-        background #f7f3ee
-        inactive_workspace #f7f3ee #f7f3ee #605A52 
-        focused_workspace #605A52 #605A52 #f7f3ee 
-    }
+    # colors {
+    #     statusline $fg
+    #     background $bg
+    #     inactive_workspace $bg $bg $fg
+    #     focused_workspace $primary $primary $fg
+    # }
 }
 
 include /etc/sway/config.d/*
